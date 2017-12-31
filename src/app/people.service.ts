@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+
+export interface Person {
+  name: string;
+}
 
 @Injectable()
 export class PeopleService {
@@ -9,7 +13,15 @@ export class PeopleService {
   constructor(private http: HttpClient) { }
 
   fetchPeople(): Observable<Object> {
-    return this.http.get('/assets/data/people.json');
+    /*
+    const params = new HttpParams()
+      .set('id', '2');
+
+    return this.http.get<Person>('https://reqres.in/api/users/', {
+      params: params
+    });
+    */
+    return this.http.post<Person>('https://reqres.in/api/users/2', { name: 'Pete'} );
   }
 
 }
