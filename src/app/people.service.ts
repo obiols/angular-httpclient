@@ -21,7 +21,7 @@ export class PeopleService {
       params: params
     });
     */
-    return this.http.post<Person>('https://reqres.in/api/users/2', { name: 'Pete'} );
+    return this.http.get<Person>('https://reqres.in/api/users/23');
   }
 
 }

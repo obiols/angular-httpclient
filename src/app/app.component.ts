@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { PeopleService } from './people.service';
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,25 @@ import { PeopleService } from './people.service';
 export class AppComponent {
 
   people$;
+  message;
 
   constructor(private peopleService: PeopleService) {}
 
   fetchPeople() {
     this.peopleService.fetchPeople()
-      .subscribe(data => {
-        this.people$ = data;
-      });
+      .subscribe(
+        (data) => {
+          this.message = null;
+          this.people$ = data;
+        },
+        (err: HttpErrorResponse) => {
+          if (err instanceof Error) {
+            // client-side error
+            this.message = `An error occured ${err.error.message}`;
+          } else {
+            this.message = `Backend returned error code ${err.status}, body was: ${err.message}`;
+          }
+        }
+    );
   }
 }
