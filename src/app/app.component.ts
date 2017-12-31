@@ -15,6 +15,12 @@ export class AppComponent {
   constructor(private peopleService: PeopleService) {}
 
   fetchPeople() {
-    this.people$ = this.peopleService.fetchPeople();
+    this.peopleService
+      .fetchPeople()
+      .subscribe(
+        (data) => {
+          this.people$ = data;
+        }
+      );
   }
 }

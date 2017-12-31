@@ -9,13 +9,17 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/of';
 
+export interface Person {
+  name: string;
+}
+
 @Injectable()
 export class PeopleService {
 
   constructor(private http: HttpClient) { }
 
-  fetchPeople(): Observable<Object> {
-    return this.http.get('/assets/data/people.txt', { responseType: 'text'});
+  fetchPeople(): Observable<Person[]> {
+    return this.http.get<Person[]>('/assets/data/people.json');
   }
 
 }
