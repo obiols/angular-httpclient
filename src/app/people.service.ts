@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/retry';
@@ -19,19 +19,9 @@ export class PeopleService {
   constructor(private http: HttpClient) { }
 
   fetchPeople(): Observable<Object> {
-    return this.http.get<Person>('https://reqres.in/api/users/23')
-      .retryWhen(err => {
-        let retries = 3;
-        return err
-          .delay(1000)
-          .flatMap((err) => {
-            if (retries-- > 0) {
-              return Observable.of(err);
-            } else {
-              return Observable.throw(err);
-            }
-          });
-      });
+    return this.http.get<Person>('https://reqres.in/api/users/2', {
+      headers: new HttpHeaders().set('app-language', 'it')
+    });
   }
 
 }
