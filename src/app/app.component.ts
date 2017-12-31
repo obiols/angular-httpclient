@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-
 import { PeopleService } from './people.service';
-import { HttpErrorResponse } from '@angular/common/http/src/response';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +9,25 @@ import { HttpErrorResponse } from '@angular/common/http/src/response';
 })
 export class AppComponent {
 
-  people$;
+  output;
 
   constructor(private peopleService: PeopleService) {}
 
-  fetchPeople() {
+  uploadAvatar(fileUpload) {
+    const formData = new FormData();
+    formData.append('avatar', fileUpload.files[0], 'avatar.jpg');
+
     this.peopleService
-      .fetchPeople()
-      .subscribe(
-        (data) => {
-          this.people$ = data;
+      .uploadAvatar(formData)
+      .subscribe(res => {
+        if (res.type === HttpEventType.UploadProgress) {
+          const percentage = Math.round(100 * res.loaded / res.total);
+
+          this.output = `File is ${percentage}% uploaded`;
+        } else if (res instanceof HttpResponse) {
+          this.output = `File is completely uploaded`;
         }
-      );
+      });
+
   }
 }
