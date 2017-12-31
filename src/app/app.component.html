@@ -1,9 +1,5 @@
 <button (click)="fetchPeople()">Fetch people</button>
 <hr />
 <pre>
-  {{ people$ | json }}
+  {{ people$ | async | json }}
 </pre>
-
-<p *ngIf="message">
-  <strong>Error: </strong> {{ message }}
-</p>
